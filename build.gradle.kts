@@ -31,7 +31,7 @@ plugins {
 base {
     group = "io.mailguru"
     version = "0.1.0-SNAPSHOT"
-    archivesName.set("mailguru-skeleton-kotlin")
+    archivesName.set("mailguru-kotlin-skeleton")
 }
 
 val versions: Map<String, String> = (extra["versions"] as Map<String, String>)
@@ -54,7 +54,7 @@ plugins.withId("com.vanniktech.maven.publish.base") {
         pom {
             name.set(project.name)
             description.set("Put your description here.")
-            url.set("https://github.com/mlgr-io/skeleton-kotlin")
+            url.set("https://github.com/mlgr-io/kotlin-skeleton")
             licenses {
                 license {
                     name.set("GNU General Public License, Version 3")
@@ -70,9 +70,9 @@ plugins.withId("com.vanniktech.maven.publish.base") {
                 }
             }
             scm {
-                connection.set("scm:git:git://github.com/mlgr-io/skeleton-kotlin.git")
-                developerConnection.set("scm:git:ssh://github.com:mlgr-io/skeleton-kotlin.git")
-                url.set("https://github.com/mlgr-io/skeleton-kotlin")
+                connection.set("scm:git:git://github.com/mlgr-io/kotlin-skeleton.git")
+                developerConnection.set("scm:git:ssh://github.com:mlgr-io/kotlin-skeleton.git")
+                url.set("https://github.com/mlgr-io/kotlin-skeleton")
             }
         }
         repositories {
