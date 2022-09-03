@@ -83,6 +83,14 @@ dependencies and a simple CI/CD workflow for GitHub.
 You may abstract the [list of included plugins](01-versions.gradle.kts#L16) and
 [other dependencies](02-configuration.gradle.kts#L23) right from the files.
 
+### Versioning strategy
+
+This project will be tagged as any of the dependencies change. We will raise the **minor** version, if any of the
+included dependencies change their minor version and we will raise the **major** version, if any of the
+included dependencies change their major version.
+
+Any other updates to this project itself (documentation etc.) will **not** result in a tagged release.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -112,7 +120,7 @@ apply(from = "01-versions.gradle.kts")
 ```
 by
 ```kotlin
-apply(from = "https://github.com/mlgr-io/kotlin-skeleton/blob/0.1.0/01-versions.gradle.kts")
+apply(from = "https://github.com/mlgr-io/kotlin-skeleton/blob/0.1/01-versions.gradle.kts")
 ```
 and
 ```kotlin
@@ -120,7 +128,7 @@ apply(from = "02-configuration.gradle.kts")
 ```
 by
 ```kotlin
-apply(from = "https://github.com/mlgr-io/kotlin-skeleton/blob/0.1.0/02-configuration.gradle.kts")
+apply(from = "https://github.com/mlgr-io/kotlin-skeleton/blob/0.1/02-configuration.gradle.kts")
 ```
 respectively.
 **Please make sure to NOT link to develop, as these files may include undetected changes.**
