@@ -101,6 +101,7 @@ Since this project isn't going to be released at maven central (because that wou
 the latest `develop` branch of this repository, drop the link to this repository and start your work from there: 
    ```sh
    git clone https://github.com/mlgr-io/kotlin-skeleton.git your-desired-project-folder
+   cd your-desired-project-folder
    git remote rm origin
    ```
 
