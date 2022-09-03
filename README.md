@@ -120,7 +120,7 @@ apply(from = "01-versions.gradle.kts")
 ```
 by
 ```kotlin
-apply(from = "https://github.com/mlgr-io/kotlin-skeleton/blob/0.1/01-versions.gradle.kts")
+apply(from = "https://raw.githubusercontent.com/mlgr-io/kotlin-skeleton/0.1/01-versions.gradle.kts")
 ```
 and
 ```kotlin
@@ -128,7 +128,7 @@ apply(from = "02-configuration.gradle.kts")
 ```
 by
 ```kotlin
-apply(from = "https://github.com/mlgr-io/kotlin-skeleton/blob/0.1/02-configuration.gradle.kts")
+apply(from = "https://raw.githubusercontent.com/mlgr-io/kotlin-skeleton/0.1/02-configuration.gradle.kts")
 ```
 respectively.
 **Please make sure to NOT link to develop, as these files may include undetected changes.**
