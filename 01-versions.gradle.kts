@@ -7,6 +7,7 @@ val versions = mapOf(
     "junit-jupiter" to "5.9.0",
     "kotest" to "5.4.2",
     "ktlint" to "11.0.0",
+    "mockk" to "1.12.0",
     "maven-publish" to "0.21.0",
 ).plus(extra["versions"] as Map<String, String>)
 

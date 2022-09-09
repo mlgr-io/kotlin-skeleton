@@ -31,6 +31,7 @@ dependencies {
     "testImplementation"("io.kotest:kotest-assertions-core:" + versions["kotest"])
     "testImplementation"("io.kotest:kotest-property:" + versions["kotest"])
     "testImplementation"("io.kotest:kotest-runner-junit5:" + versions["kotest"])
+    "testImplementation"("io.mockk:mockk:" + versions["mockk"])
     "testImplementation"("org.jetbrains.kotlin:kotlin-test-junit5")
     "testImplementation"("org.junit.jupiter:junit-jupiter:" + versions["junit-jupiter"])
 }
