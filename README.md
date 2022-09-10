@@ -39,7 +39,7 @@
 <h3 align="center">Kotlin project skeleton</h3>
 
   <p align="center">
-    Example project for a plain Kotlin project with a multi-file gradle config, including common dependencies. 
+    Kotlin project blueprint, including common dependencies. 
     <!-- br />
     <a href="https://github.com/mlgr-io/kotlin-skeleton"><strong>Explore the docs »</strong></a //-->
     <br />
@@ -49,6 +49,8 @@
     <a href="https://github.com/mlgr-io/kotlin-skeleton/issues">Report Bug</a>
     ·
     <a href="https://github.com/mlgr-io/kotlin-skeleton/issues">Request Feature</a>
+    ·
+    <a href="CHANGELOG.md">Changelog</a>
   </p>
 </div>
 
@@ -77,19 +79,15 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This project was meant to help us get new project initialized faster. It includes some commonly used plugins and
-dependencies and a simple CI/CD workflow for GitHub.
+This project was meant to help us get new project initialized faster; it should be understand as a blueprint for all
+kind of projects written in Kotlin.
 
-You may abstract the [list of included plugins](01-versions.gradle.kts#L16) and
-[other dependencies](02-configuration.gradle.kts#L23) right from the files.
+You may abstract the list of included plugins and dependencies from the [io.mailguru.gradle-config plugin page](https://github.com/mlgr-io/gradle-config).
 
 ### Versioning strategy
 
-This project will be tagged as any of the dependencies change. We will raise the **minor** version, if any of the
-included dependencies change their minor version and we will raise the **major** version, if any of the
-included dependencies change their major version.
-
-Any other updates to this project itself (documentation etc.) will **not** result in a tagged release.
+This library uses [Semantic Versioning 2.0](https://semver.org) and generates its Changelog from
+[Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/) messages.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -106,33 +104,64 @@ subject to change in future major releases).
 ### Installation
 
 Since this project isn't going to be released at maven central (because that wouldn't make any sense), you may clone
-the latest `develop` branch of this repository, drop the link to this repository and start your work from there: 
-   ```sh
-   git clone https://github.com/mlgr-io/kotlin-skeleton.git your-desired-project-folder
-   cd your-desired-project-folder
-   git remote rm origin
-   ```
+the latest `develop` branch of this repository, do some cleanup, and start your work from a clean local git repo: 
+```sh
+git clone https://github.com/mlgr-io/kotlin-skeleton.git your-desired-project-folder
 
-On the other hand, if you want to use the splitted gradle config, you may copy the [build.gradle.kts](build.gradle.kts)
-into your own project and replace the file references by absolute URLs, that is: Replace
-```kotlin
-apply(from = "01-versions.gradle.kts")
-```
-by
-```kotlin
-apply(from = "https://raw.githubusercontent.com/mlgr-io/kotlin-skeleton/0.1/01-versions.gradle.kts")
-```
-and
-```kotlin
-apply(from = "02-configuration.gradle.kts")
-```
-by
-```kotlin
-apply(from = "https://raw.githubusercontent.com/mlgr-io/kotlin-skeleton/0.1/02-configuration.gradle.kts")
-```
-respectively.
-**Please make sure to NOT link to develop, as these files may include undetected changes.**
+cd your-desired-project-folder
 
+git remote rm origin
+
+# Optional steps to prepare your local copy of the repository for your own project:
+
+# Remove all tags
+git tag | xargs git tag -d
+
+# Squash the whole history into a single commit
+git reset $(git commit-tree HEAD^{tree} -m "feat: initial commit")
+```
+
+You may also want to replace your copy of `CHANGELOG.md` by a
+[clean stub](https://github.com/mlgr-io/gradle-config/blob/b21597a6dc828f5aedfdd26d68fd9932971a12f1/CHANGELOG.md) (the
+"draft new release" GitHub action expects at least such a stub and will throw an error if the file is missing or not
+well-formatted).
+
+### (Semi-)Automatic Releases, Changelog generation and maven publication
+
+This project includes GitHub actions that create releases, update the docs and publish your artifacts to a maven
+registry. For publishing, please see the following section. For information on how creating releases works, please see
+the official documentation of the [GitFlow release workflow using GitHub actions](https://github.com/thomaseizinger/github-action-gitflow-release-workflow).
+
+### Publishing signed artifacts to an arbitrary maven registry
+
+If you want your code to be packed, signed and published (and closed and released) to maven central on a release, you'll
+have to deposit the required secrets at your GitHub repository. The following secrets are required for that GitHub
+action to work (we assume that you're familiar with GPG and already have generated a key pair; if not, please have a 
+look at the [Central Repository GPG guide](https://central.sonatype.org/publish/requirements/gpg/)):
+
+* `GPG_KEY_ID` The short (8 chars) key ID of your GPG key; on macOS, you may retrieve the key ID by executing
+  ```shell
+  gpg --list-secret-keys --keyid-format short | grep sec | cut -d' ' -f 4 | cut -d'/' -f 2`
+  ```
+* `GPG_SIGNING_KEY` The GPG signing key, encoded as Base64. You will most likely get this information by executing
+  ```shell
+  cat ~/.gnupg/secring.gpg | base64
+  ```
+* `GPG_PASSPHRASE` The passphrase for your preceding GPG key, as chosen on key pair generation.
+* `MAVEN_CENTRAL_USERNAME` The username for your publication target maven registry. \
+  The [example build.gradle.kts](build.gradle.kts#L19) is configured to publish to `https://s01.oss.sonatype.org`. 
+* `MAVEN_CENTRAL_PASSWORD` The password for the maven registry, related to `MAVEN_CENTRAL_USERNAME`.
+
+To make sure everything works as expected, we **strongly recommend** to disable the `closeAndReleaseRepository` task on 
+your first publication(s):
+
+To **remove the auto-close-and-release behaviour**, please remove (or comment) the `closeAndReleaseRepository` gradle
+task from `release-publish.yml` (nearly at the end). After disabling, you have to close and release your artifact
+manually from your staging repository at the sonatype registry (only if you published to their registry, of course).
+
+If you want to **remove auto-publishing completely** (that is, no maven publish on a finished release), please delete the
+`publish` job from the [release-publish.yml](.github/workflows/release-publish.yml#L59) (starting from L59) action
+configuration.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -141,16 +170,21 @@ respectively.
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any
+contributions you make are **greatly appreciated**.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also
+simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+2. Create your Feature Branch (`git checkout -b feature/YourAmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
+4. Push to the Branch (`git push origin feature/YourAmazingFeature`)
 5. Open a Pull Request
+
+There is also an [excellent step-by-step guide](https://gist.github.com/james-priest/74188772ef2a6f8d7132d0b9dc065f9c)
+written by [James Priest](https://james-priest.github.io).
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
